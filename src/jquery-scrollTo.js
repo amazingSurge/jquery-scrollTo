@@ -60,17 +60,17 @@
 				self.insertRule(self.sheet, '.' + self.namespace + '_fixed', 'position: fixed;margin:0;top: ' + self.navTop + 'px; left: ' + self.navLeft + 'px;', 0);
 				if (this.options.top) {
 					this.navTop = this.options.top;
-				}else {
+				} else {
 					this.navTop = this.$element.offset().top;
 				}
 				if (this.options.left) {
 					this.navLeft = this.options.left;
-				}else {
+				} else {
 					this.navLeft = this.$element.offset().left;
 				}
 				if (this.options.cover.toUpperCase() === 'YES') {
 					this.navHeight = this.$element.height();
-				}else if (this.options.cover.toUpperCase() === 'NO'){
+				} else if (this.options.cover.toUpperCase() === 'NO') {
 					this.navHeight = 0;
 				}
 			},

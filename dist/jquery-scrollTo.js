@@ -1,4 +1,4 @@
-/*! jQuery scrollTo - v0.1.0 - 2013-08-26
+/*! jQuery scrollTo - v0.1.0 - 2013-08-27
 * https://github.com/amazingSurge/jquery-scrollTo
 * Copyright (c) 2013 amazingSurge; Licensed GPL */
 (function(window, document, $, undefined) {
@@ -13,10 +13,9 @@
 
 		this.options = $.extend(ScrollTo.defaults, options);
 		this.namespace = this.options.namespace;
-		this.navTop = this.$element.offset().top;
-		this.navLeft = this.$element.offset().left;
+		this.class = this.options.class;
+
 		this.noroll = false;
-		this.disable = false;
 
 		var self = this;
 		$.extend(self, {
@@ -40,7 +39,7 @@
 					var $actualAnchor = $(href);
 
 					if ($actualAnchor && $actualAnchor.length > 0) {
-						var top = $actualAnchor.offset().top;
+						var top = $actualAnchor.offset().top - self.navHeight;
 
 						self.$doc.stop(true, false).animate({
 							scrollTop: top
@@ -53,21 +52,36 @@
 				});
 			},
 			prepare: function() {
-				self.insertRule(self.sheet, '.' + self.namespace + '_fixed', 'top: ' + self.navTop + 'px; left: ' + self.navLeft + 'px;', 0);
+				self.insertRule(self.sheet, '.' + self.namespace + '_fixed', 'position: fixed;margin:0;top: ' + self.navTop + 'px; left: ' + self.navLeft + 'px;', 0);
+				if (this.options.top) {
+					this.navTop = this.options.top;
+				} else {
+					this.navTop = this.$element.offset().top;
+				}
+				if (this.options.left) {
+					this.navLeft = this.options.left;
+				} else {
+					this.navLeft = this.$element.offset().left;
+				}
+				if (this.options.cover.toUpperCase() === 'YES') {
+					this.navHeight = this.$element.height();
+				} else if (this.options.cover.toUpperCase() === 'NO') {
+					this.navHeight = 0;
+				}
 			},
 			active: function($index) {
-				if ($index.parent().has(".active").length) {
-					$index.parent().find(".active").removeClass("active");
-					$index.addClass("active");
+				if ($index.parent().has('.' + self.class).length) {
+					$index.parent().find('.' + self.class).removeClass(self.class);
+					$index.addClass(self.class);
 				} else {
-					$index.addClass("active");
+					$index.addClass(self.class);
 				}
 			},
 			roll: function() {
 				if (self.noroll) {
 					return;
 				}
-				$('body').find("[id]").each(function() {
+				self.$doc.find("[id]").each(function() {
 					if ($(window).scrollTop() > $(this).offset().top - 100 && $(window).scrollTop() < $(this).offset().top + $(this).parent().height()) {
 						var anchor_href = $(this).attr('id');
 						var $anchor = self.$element.find('[href="#' + anchor_href + '"]');
@@ -77,9 +91,9 @@
 			},
 			keep: function() {
 				if ($(window).scrollTop() > this.navTop) {
-					self.$element.addClass('fixed');
+					self.$element.addClass(self.namespace + '_fixed');
 				} else {
-					self.$element.removeClass('fixed');
+					self.$element.removeClass(self.namespace + '_fixed');
 				}
 			},
 			insertRule: function(sheet, selectorText, cssText, position) {
@@ -98,8 +112,12 @@
 	};
 
 	ScrollTo.defaults = {
+		cover: 'no', //No or Yes
+		top: null,
+		left: null,
 		speed: '1000',
-		namespace: 'ScrollTo'
+		class: 'active',
+		namespace: 'scrollTo'
 	};
 	ScrollTo.prototype = {
 		constructor: ScrollTo,
