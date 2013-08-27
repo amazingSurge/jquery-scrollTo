@@ -57,22 +57,22 @@
 				});
 			},
 			prepare: function() {
+				if (self.options.top) {
+					self.navTop = self.options.top;
+				} else {
+					self.navTop = self.$element.offset().top;
+				}
+				if (self.options.left) {
+					self.navLeft = self.options.left;
+				} else {
+					self.navLeft = self.$element.offset().left;
+				}
+				if (self.options.cover.toUpperCase() === 'YES') {
+					self.navHeight = self.$element.height();
+				} else if (self.options.cover.toUpperCase() === 'NO') {
+					self.navHeight = 0;
+				}
 				self.insertRule(self.sheet, '.' + self.namespace + '_fixed', 'position: fixed;margin:0;top: ' + self.navTop + 'px; left: ' + self.navLeft + 'px;', 0);
-				if (this.options.top) {
-					this.navTop = this.options.top;
-				} else {
-					this.navTop = this.$element.offset().top;
-				}
-				if (this.options.left) {
-					this.navLeft = this.options.left;
-				} else {
-					this.navLeft = this.$element.offset().left;
-				}
-				if (this.options.cover.toUpperCase() === 'YES') {
-					this.navHeight = this.$element.height();
-				} else if (this.options.cover.toUpperCase() === 'NO') {
-					this.navHeight = 0;
-				}
 			},
 			active: function($index) {
 				if ($index.parent().has('.' + self.class).length) {
