@@ -1,0 +1,48 @@
+.container {
+	position: relative;
+	width: 980px;
+	margin: auto;
+}
+.shaded {
+	background-color: #e9e9e9;
+}
+.nav {
+	position: absolute;
+	top: 100px;
+	left: -300px;
+	width: 300px;
+	margin: 0;
+	padding: 0;
+}
+.nav > li {
+	position: relative;
+	display: block;
+	line-height: 2;
+	list-style: none;
+}
+.nav > li > a {
+	display: block;
+	padding: 5px 20px;
+	color: #716B7A;
+	text-decoration: none;
+	background-color: #F7F5FA;
+}
+.nav > li > a:hover {
+	background-color: #E5E3E9;
+}
+.nav > .active > a {
+	color: #563D7C;
+	font-weight: bold;
+}
+.nav .nav {
+	position: relative;
+	top: 0;
+	left: 0;
+	display: none;
+}
+.nav > .active > .nav {
+	display: block;
+}
+.nav .nav > li > a{
+	padding-left: 30px;
+}
