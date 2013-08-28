@@ -46,6 +46,17 @@ module.exports = function(grunt) {
 		},
 		// -- copy config ----------------------------------------------------------
 		copy: {
+			easing: {
+				files: [{
+					expand: true,
+					flatten: true,
+					cwd: 'bower_components/easing',
+					src: [
+						'css/easing.css'
+					],
+					dest: 'css/'
+				}]
+			},
 			jquery: {
 				files: [{
 					expand: true,

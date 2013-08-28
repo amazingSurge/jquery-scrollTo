@@ -18,7 +18,8 @@
 
 		this.options = $.extend(ScrollTo.defaults, options);
 		this.namespace = this.options.namespace;
-		this.class = this.options.class;
+		this.easing = 'easing_' + this.options.easing;
+		this.activeClass = this.namespace + '_active';
 
 		this.noroll = false;
 
@@ -27,59 +28,57 @@
 			init: function() {
 				self.prepare();
 				self.keep();
+				self.roll();
 
-				self.$element.on('click.scrollTo', event, function() {
+				self.$element.on('click.scrollTo', function(event) {
 					event = event || window.event;
 					var target = event.target || event.srcElement;
 					self.$target = $(target);
 					self.active(self.$target.parent());
-					self.$element.trigger('ScrollTo::jump');
+					self.$doc.trigger('ScrollTo::jump');
 					return false;
 				});
 
 				//bind events
-				self.$element.on('ScrollTo::jump', function() {
+				self.$doc.on('ScrollTo::jump', function() {
 					self.noroll = true;
 					var href = self.$target.attr('href');
 					var $actualAnchor = $(href);
 
 					if ($actualAnchor && $actualAnchor.length > 0) {
 						var top = $actualAnchor.offset().top - self.navHeight;
-
-						self.$doc.stop(true, false).animate({
-							scrollTop: top
-						}, parseInt(self.options.speed), function() {
-							self.noroll = false;
+						var pos = $(window).scrollTop();
+						self.$doc.css({
+							'margin-top': -(pos - top) + 'px'
+						});
+						$(window).scrollTop(top);
+						self.$doc.addClass(self.easing).css({
+							'margin-top': ''
 						});
 					} else {
 						return;
 					}
 				});
+				self.$doc.on('webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd', function() {
+					self.noroll = false;
+					self.$doc.removeClass(self.easing);
+				});
+
 			},
 			prepare: function() {
-				if (self.options.top) {
-					self.navTop = self.options.top;
-				} else {
-					self.navTop = self.$element.offset().top;
-				}
-				if (self.options.left) {
-					self.navLeft = self.options.left;
-				} else {
-					self.navLeft = self.$element.offset().left;
-				}
-				if (self.options.cover.toUpperCase() === 'YES') {
+				if (self.options.cover) {
 					self.navHeight = self.$element.height();
-				} else if (self.options.cover.toUpperCase() === 'NO') {
+				} else {
 					self.navHeight = 0;
 				}
-				self.insertRule(self.sheet, '.' + self.namespace + '_fixed', 'position: fixed;margin:0;top: ' + self.navTop + 'px; left: ' + self.navLeft + 'px;', 0);
+				self.insertRule(self.sheet, '.' + self.easing, '-webkit-transition-duration: ' + self.options.speed + 'ms; transition-duration: ' + self.options.speed + 'ms;', 0);
 			},
 			active: function($index) {
-				if ($index.parent().has('.' + self.class).length) {
-					$index.parent().find('.' + self.class).removeClass(self.class);
-					$index.addClass(self.class);
+				if ($index.parent().has('.' + self.activeClass).length) {
+					$index.parent().find('.' + self.activeClass).removeClass(self.activeClass);
+					$index.addClass(self.activeClass);
 				} else {
-					$index.addClass(self.class);
+					$index.addClass(self.activeClass);
 				}
 			},
 			roll: function() {
@@ -117,18 +116,16 @@
 	};
 
 	ScrollTo.defaults = {
-		cover: 'no', //No or Yes
-		top: null,
-		left: null,
+		cover: false, //true or false
 		speed: '1000',
-		class: 'active',
+		easing: 'linear',
 		namespace: 'scrollTo'
 	};
 	ScrollTo.prototype = {
 		constructor: ScrollTo,
 
 		jump: function() {
-			this.$element.trigger('ScrollTo::jump');
+			this.$doc.trigger('ScrollTo::jump');
 		},
 		destroy: function() {
 			this.$trigger.remove();

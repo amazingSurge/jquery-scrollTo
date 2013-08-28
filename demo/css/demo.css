@@ -7,9 +7,9 @@
 	background-color: #e9e9e9;
 }
 .nav {
-	position: absolute;
-	top: 100px;
-	left: -300px;
+	position: fixed;
+	top: 110px;
+	left: 161px;
 	width: 300px;
 	margin: 0;
 	padding: 0;
@@ -26,11 +26,12 @@
 	color: #716B7A;
 	text-decoration: none;
 	background-color: #F7F5FA;
+	outline: none;
 }
 .nav > li > a:hover {
 	background-color: #E5E3E9;
 }
-.nav > .active > a {
+.nav > .scrollTo_active > a {
 	color: #563D7C;
 	font-weight: bold;
 }
@@ -40,7 +41,7 @@
 	left: 0;
 	display: none;
 }
-.nav > .active > .nav {
+.nav > .scrollTo_active > .nav {
 	display: block;
 }
 .nav .nav > li > a{
