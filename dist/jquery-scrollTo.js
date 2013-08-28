@@ -22,7 +22,6 @@
 		$.extend(self, {
 			init: function() {
 				self.prepare();
-				self.keep();
 				self.roll();
 
 				self.$element.on('click.scrollTo', function(event) {
@@ -41,7 +40,7 @@
 					var $actualAnchor = $(href);
 
 					if ($actualAnchor && $actualAnchor.length > 0) {
-						var top = $actualAnchor.offset().top - self.navHeight;
+						var top = $actualAnchor.offset().top;
 						var pos = $(window).scrollTop();
 						self.$doc.css({
 							'margin-top': -(pos - top) + 'px'
@@ -61,11 +60,6 @@
 
 			},
 			prepare: function() {
-				if (self.options.cover) {
-					self.navHeight = self.$element.height();
-				} else {
-					self.navHeight = 0;
-				}
 				self.insertRule(self.sheet, '.' + self.easing, '-webkit-transition-duration: ' + self.options.speed + 'ms; transition-duration: ' + self.options.speed + 'ms;', 0);
 			},
 			active: function($index) {
@@ -88,13 +82,6 @@
 					}
 				});
 			},
-			keep: function() {
-				if ($(window).scrollTop() > this.navTop) {
-					self.$element.addClass(self.namespace + '_fixed');
-				} else {
-					self.$element.removeClass(self.namespace + '_fixed');
-				}
-			},
 			insertRule: function(sheet, selectorText, cssText, position) {
 				if (sheet.insertRule) {
 					sheet.insertRule(selectorText + "{" + cssText + "}", position);
@@ -104,14 +91,12 @@
 			}
 		});
 		$(window).scroll(function() {
-			self.keep();
 			self.roll();
 		});
 		this.init();
 	};
 
 	ScrollTo.defaults = {
-		cover: false, //true or false
 		speed: '1000',
 		easing: 'linear',
 		namespace: 'scrollTo'
