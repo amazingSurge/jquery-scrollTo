@@ -26,14 +26,14 @@
 		var self = this;
 		$.extend(self, {
 			init: function() {
-				self.prepare();
+				self.build();
 				self.roll();
 
 				self.$element.on('click.scrollTo', function(event) {
 					event = event || window.event;
 					var target = event.target || event.srcElement;
 					self.$target = $(target);
-					self.active(self.$target.parent());
+					self.active(self.$target);
 					self.$doc.trigger('ScrollTo::jump');
 					return false;
 				});
@@ -64,12 +64,12 @@
 				});
 
 			},
-			prepare: function() {
+			build: function() {
 				self.insertRule(self.sheet, '.' + self.easing, '-webkit-transition-duration: ' + self.options.speed + 'ms; transition-duration: ' + self.options.speed + 'ms;', 0);
 			},
 			active: function($index) {
-				if ($index.parent().has('.' + self.activeClass).length) {
-					$index.parent().find('.' + self.activeClass).removeClass(self.activeClass);
+				if ($index.parent().parent().has('.' + self.activeClass).length) {
+					$index.parent().parent().find('.' + self.activeClass).removeClass(self.activeClass);
 					$index.addClass(self.activeClass);
 				} else {
 					$index.addClass(self.activeClass);
@@ -83,7 +83,7 @@
 					if ($(window).scrollTop() > $(this).offset().top - 100 && $(window).scrollTop() < $(this).offset().top + $(this).parent().height()) {
 						var anchor_href = $(this).attr('id');
 						var $anchor = self.$element.find('[href="#' + anchor_href + '"]');
-						self.active($anchor.parent());
+						self.active($anchor);
 					}
 				});
 			},

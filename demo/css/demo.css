@@ -31,7 +31,7 @@
 .nav > li > a:hover {
 	background-color: #E5E3E9;
 }
-.nav > .scrollTo_active > a {
+.nav > li > .scrollTo_active {
 	color: #563D7C;
 	font-weight: bold;
 }
@@ -41,7 +41,7 @@
 	left: 0;
 	display: none;
 }
-.nav > .scrollTo_active > .nav {
+.nav > li > .scrollTo_active + .nav {
 	display: block;
 }
 .nav .nav > li > a{
