@@ -14,8 +14,6 @@
 		this.element = element;
 		this.$element = $(element);
 		this.$doc = $('body');
-		this.sheet = document.styleSheets[document.styleSheets.length - 1];
-
 		this.options = $.extend(ScrollTo.defaults, options);
 		this.namespace = this.options.namespace;
 		this.easing = 'easing_' + this.options.easing;
@@ -46,6 +44,12 @@
 
 					if ($actualAnchor && $actualAnchor.length > 0) {
 						var top = $actualAnchor.offset().top;
+						if (self.sheet.addRule) {
+							$('body, html').stop(true, false).animate({
+								scrollTop: top
+							}, self.options.speed);
+							return;
+						}
 						var pos = $(window).scrollTop();
 						self.$doc.css({
 							'margin-top': -(pos - top) + 'px'
@@ -65,6 +69,21 @@
 
 			},
 			build: function() {
+				var sUrl = document.URL;
+				sUrl = sUrl.replace(/^.*?\:\/\/[^\/]+/, "").replace(/[^\/]+$/, "");
+				var re = new RegExp(sUrl);
+				for (var i = 0; i < document.styleSheets.length; i++) {
+					self.sheet = document.styleSheets[i];
+					if (re.test(self.sheet.href)) {
+						break;
+					} else {
+						i++;
+						if (i === document.styleSheets.length) {
+							$('head').append('<style></style>');
+							self.sheet = document.styleSheets[i];
+						}
+					}
+				}
 				self.insertRule(self.sheet, '.' + self.easing, '-webkit-transition-duration: ' + self.options.speed + 'ms; transition-duration: ' + self.options.speed + 'ms;', 0);
 			},
 			active: function($index) {
