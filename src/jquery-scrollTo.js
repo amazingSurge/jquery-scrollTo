@@ -20,6 +20,7 @@
 		this.activeClass = this.namespace + '_active';
 
 		this.noroll = false;
+		this.sheet = document.styleSheets[document.styleSheets.length - 1];
 
 		var self = this;
 		$.extend(self, {
@@ -69,21 +70,6 @@
 
 			},
 			build: function() {
-				var sUrl = document.URL;
-				sUrl = sUrl.replace(/^.*?\:\/\/[^\/]+/, "").replace(/[^\/]+$/, "");
-				var re = new RegExp(sUrl);
-				for (var i = 0; i < document.styleSheets.length; i++) {
-					self.sheet = document.styleSheets[i];
-					if (re.test(self.sheet.href)) {
-						break;
-					} else {
-						i++;
-						if (i === document.styleSheets.length) {
-							$('head').append('<style></style>');
-							self.sheet = document.styleSheets[i];
-						}
-					}
-				}
 				self.insertRule(self.sheet, '.' + self.easing, '-webkit-transition-duration: ' + self.options.speed + 'ms; transition-duration: ' + self.options.speed + 'ms;', 0);
 			},
 			active: function($index) {
@@ -107,10 +93,14 @@
 				});
 			},
 			insertRule: function(sheet, selectorText, cssText, position) {
-				if (sheet.insertRule) {
-					sheet.insertRule(selectorText + "{" + cssText + "}", position);
-				} else if (sheet.addRule) {
-					sheet.addRule(selectorText, cssText, position);
+				try {
+					if (sheet.insertRule) {
+						sheet.insertRule(selectorText + "{" + cssText + "}", position);
+					} else if (sheet.addRule) {
+						sheet.addRule(selectorText, cssText, position);
+					}
+				} catch (e) {
+					$('head').append("<style>" + selectorText + "{" + cssText + "}" + "</style>");
 				}
 			}
 		});
