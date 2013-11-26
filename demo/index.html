@@ -41,8 +41,8 @@
 		</div>
 	</header>
 	<section class="shaded">
-		<div class="container">
-			<h2 id="whyuseit">Why Use it?</h2>
+		<div class="container" id="whyuseit">
+			<h2>Why Use it?</h2>
 			<div class="row has-3 tablet-has-2 mobile-has-1">
 				<div class="column">
 					<h3>Css3/html5</h3>
@@ -72,8 +72,8 @@
 		</div>
 	</section>
 	<section>
-		<div class="container">
-			<h2 id="basic">Basic Grid</h2>
+		<div class="container" id="basic">
+			<h2>Basic Grid</h2>
 			<p>For a simple two column layout, create a <code>row</code> and add the appropriate number of <code>span-</code> columns. As this is a 12-column grid, each <code>span-</code> spans a number of those 12 columns, and should always add up to 12 for each row (or the number of columns in the parent).</p>
 			<div class="example">
 				<div class="row">
@@ -121,78 +121,82 @@
 					<div class="span-1">1</div>
 				</div>
 			</div>
-			<h3 id="offset">Offsetting columns</h3>
-			<p>Offsets allow you to create additional space between columns in a row. Like the rest of the grid, they're nestable. You can use classes like <code>prefix-4</code> and <code>suffix-8</code> to manipulate your column positions in different ways. You can offset up to 11 since you wouldn't ever offset a full-width column. Also you can add <code>no-gutter</code> class to eliminate the gutter.</p>
-			<div class="example">
-				<div class="row no-gutter">
-					<div class="span-6 prefix-6">pre-6 span-6</div>
+			<div id="offset">
+				<h3>Offsetting columns</h3>
+				<p>Offsets allow you to create additional space between columns in a row. Like the rest of the grid, they're nestable. You can use classes like <code>prefix-4</code> and <code>suffix-8</code> to manipulate your column positions in different ways. You can offset up to 11 since you wouldn't ever offset a full-width column. Also you can add <code>no-gutter</code> class to eliminate the gutter.</p>
+				<div class="example">
+					<div class="row no-gutter">
+						<div class="span-6 prefix-6">pre-6 span-6</div>
+					</div>
+					<div class="row no-gutter">
+						<div class="span-6 suffix-6">span-6 suf-6</div>
+					</div>
+					<div class="row no-gutter">
+						<div class="span-4 prefix-1 suffix-1">pre-1 span-4 suf-1</div>
+						<div class="span-4 prefix-1 suffix-1">pre-1 span-4 suf-1</div>
+					</div>
+					<div class="row no-gutter">
+						<div class="span-8 prefix-2 suffix-2">pre-2 span-8 suf-2</div>
+					</div>
 				</div>
-				<div class="row no-gutter">
-					<div class="span-6 suffix-6">span-6 suf-6</div>
-				</div>
-				<div class="row no-gutter">
-					<div class="span-4 prefix-1 suffix-1">pre-1 span-4 suf-1</div>
-					<div class="span-4 prefix-1 suffix-1">pre-1 span-4 suf-1</div>
-				</div>
-				<div class="row no-gutter">
-					<div class="span-8 prefix-2 suffix-2">pre-2 span-8 suf-2</div>
-				</div>
-				
 			</div>
-			<h3 id="centered">Centered columns</h3>
-			<p>Centered columns are placed in the middle of the row. This is accomplished by adding a class of <code>center</code> depending on which breakpoint you want the row to center on. </p>
-			<div class="example">
-				<div class="row center">
-					<div class="span-7">span-7 center</div>
+			<div id="centered">
+				<h3 id="centered">Centered columns</h3>
+				<p>Centered columns are placed in the middle of the row. This is accomplished by adding a class of <code>center</code> depending on which breakpoint you want the row to center on. </p>
+				<div class="example">
+					<div class="row center">
+						<div class="span-7">span-7 center</div>
+					</div>
+					<div class="row center">
+						<div class="span-9">span-9 center</div>
+					</div>
+					<div class="row center">
+						<div class="span-11">span-11 center</div>
+					</div>	
 				</div>
-				<div class="row center">
-					<div class="span-9">span-9 center</div>
-				</div>
-				<div class="row center">
-					<div class="span-11">span-11 center</div>
-				</div>
-				
 			</div>
-			<h3 id="basic_infinitely">Infinitely Nest columns</h3>
-			<div class="example">
-				<div class="row">
-				  <div class="span-8">8
+			<div id="basic_infinitely">
+				<h3>Infinitely Nest columns</h3>
+				<div class="example">
 					<div class="row">
-					  <div class="span-8">8 Nested
+					  <div class="span-8">8
 						<div class="row">
-						  <div class="span-8">8 Nested Again</div>
+						  <div class="span-8">8 Nested
+							<div class="row">
+							  <div class="span-8">8 Nested Again</div>
+							  <div class="span-4">4</div>
+							</div>
+						  </div>
 						  <div class="span-4">4</div>
 						</div>
 					  </div>
 					  <div class="span-4">4</div>
 					</div>
-				  </div>
-				  <div class="span-4">4</div>
 				</div>
-				
 			</div>
-			<h3 id="basic_responsive">Responsive</h3>
-			<p>Resize the browser to see the example layouts change. There is two breakpoints currently.</p>
-			<p>For tablet device, you can add <code>tablet-</code> prefix to the previous classes. e.g: <code>tablet-span-x</code>, <code>tablet-prefix-x</code>, <code>tablet-suffix-x</code>.</p>
-			<p>The mobile is the same: <code>mobile-span-x</code>, <code>mobile-prefix-x</code>, <code>mobile-suffix-x</code>.</p>
-			<div class="example">
-				<div class="row">
-					<div class="span-4 prefix-1 suffix-1 tablet-span-10 tablet-prefix-0 tablet-suffix-0">s-4 pre-1 suf-1 t-s-10 t-pre-0 t-suf-0</div>
-					<div class="span-3 tablet-span-5 mobile-span-2">s-3 t-s-5 m-s-2</div>
-					<div class="span-3 tablet-span-5 mobile-span-4">s-3 t-s-5 m-s-4</div>
+			<div id="basic_responsive">
+				<h3>Responsive</h3>
+				<p>Resize the browser to see the example layouts change. There is two breakpoints currently.</p>
+				<p>For tablet device, you can add <code>tablet-</code> prefix to the previous classes. e.g: <code>tablet-span-x</code>, <code>tablet-prefix-x</code>, <code>tablet-suffix-x</code>.</p>
+				<p>The mobile is the same: <code>mobile-span-x</code>, <code>mobile-prefix-x</code>, <code>mobile-suffix-x</code>.</p>
+				<div class="example">
+					<div class="row">
+						<div class="span-4 prefix-1 suffix-1 tablet-span-10 tablet-prefix-0 tablet-suffix-0">s-4 pre-1 suf-1 t-s-10 t-pre-0 t-suf-0</div>
+						<div class="span-3 tablet-span-5 mobile-span-2">s-3 t-s-5 m-s-2</div>
+						<div class="span-3 tablet-span-5 mobile-span-4">s-3 t-s-5 m-s-4</div>
+					</div>
+					<div class="row">
+						<div class="span-4 tablet-span-8 tablet-prefix-2 mobile-span-6 mobile-prefix-0">s-4 t-s-8 t-pre-2 m-s-6 m-pre-0</div>
+						<div class="span-4 tablet-span-6 mobile-span-3">s-4 t-s-6 m-s-3</div>
+						<div class="span-4 tablet-span-4 mobile-span-3">s-4 t-s-4 m-s-3</div>
+					</div>
 				</div>
-				<div class="row">
-					<div class="span-4 tablet-span-8 tablet-prefix-2 mobile-span-6 mobile-prefix-0">s-4 t-s-8 t-pre-2 m-s-6 m-pre-0</div>
-					<div class="span-4 tablet-span-6 mobile-span-3">s-4 t-s-6 m-s-3</div>
-					<div class="span-4 tablet-span-4 mobile-span-3">s-4 t-s-4 m-s-3</div>
-				</div>
-				
 			</div>
 		</div>
 	</section>
 	<section class="shaded">
-		<div class="container">
-			<h2 id="tiles">Tiles Grid</h2>
+		<div class="container" id="tiles">
+			<h2>Tiles Grid</h2>
 			<p>Tiles are an awesome new way to lay out elements on a page that you want to maintain their “grid" style layout. This allows you to preserve the look and feel of things like a grid of profile images in a friends list, or other block-style content generated by your application across devices. Tiles are invoked using the <code>has-</code> class in association with a <code>columns</code> class to determine the layout. </p>
 			<p>Also, it support differenet device with the prefix <code>tablet-</code> and <code>mobile-</code>.<p>
 			<div class="example">
@@ -220,13 +224,12 @@
 					<li class="column">eq</li>
 					<li class="column">eq</li>
 				</ul>
-				
 			</div>
 		</div>
 	</section>
 	<section>
-		<div class="container">
-			<h2 id="phrase">Phrase Grid</h2>
+		<div class="container" id="phrase">
+			<h2>Phrase Grid</h2>
 			<p>Phrase Grid use fraction phrase to define the column width instead of number. It's easier to read and understand.</p>
 			<div class="example">
 				<div class="row">
@@ -238,45 +241,47 @@
 					<div class="column three-fourth">three-fourth</div>
 					<div class="column fourth">fourth</div>
 				</div>
-				
 			</div>
 			<p>The classes are: <code>full</code>, <code>half</code>, <code>two-fourth</code>, <code>three-sixth</code>, <code>third</code>, <code>two-sixth</code>, <code>two-third</code>, <code>fourth</code>, <code>three-fourth</code>, <code>fifth</code>, <code>two-fifth</code>, <code>three-fifth</code>, <code>four-fifth</code>, <code>sixth</code>, <code>five-sixth</code>.</p>
-			<h3 id="phrase_infinitely">Infinitely Nest columns</h3>
-			<div class="example">
-				<div class="row">
-				  <div class="column two-third">two-third
+			<div id="phrase_infinitely">
+				<h3>Infinitely Nest columns</h3>
+				<div class="example">
 					<div class="row">
 					  <div class="column two-third">two-third
 						<div class="row">
-						  <div class="column half">half</div>
-						  <div class="column half">half</div>
+						  <div class="column two-third">two-third
+							<div class="row">
+							  <div class="column half">half</div>
+							  <div class="column half">half</div>
+							</div>
+						  </div>
+						  <div class="column third">third</div>
 						</div>
 					  </div>
 					  <div class="column third">third</div>
 					</div>
-				  </div>
-				  <div class="column third">third</div>
 				</div>
-				
 			</div>
-			<h3 id="phrase_responsive">Responsive</h3>
-			<p>You can add <code>table-</code> and <code>mobile-</code> prefix to make them adapt different viewports.</p>
-			<div class="example">
-				<div class="row">
-					<div class="column fourth tablet-half mobile-full">fourth tablet-half mobile-full</div>
-					<div class="column fourth tablet-half mobile-half">fourth tablet-half mobile-half</div>
-					<div class="column fourth tablet-half mobile-half">fourth tablet-half mobile-half</div>
-					<div class="column fourth tablet-half mobile-full">fourth tablet-half mobile-full</div>
+			<div  id="phrase_responsive">
+				<h3>Responsive</h3>
+				<p>You can add <code>table-</code> and <code>mobile-</code> prefix to make them adapt different viewports.</p>
+				<div class="example">
+					<div class="row">
+						<div class="column fourth tablet-half mobile-full">fourth tablet-half mobile-full</div>
+						<div class="column fourth tablet-half mobile-half">fourth tablet-half mobile-half</div>
+						<div class="column fourth tablet-half mobile-half">fourth tablet-half mobile-half</div>
+						<div class="column fourth tablet-half mobile-full">fourth tablet-half mobile-full</div>
+					</div>
+					
 				</div>
-				
+				<p>Adapt grid system uses fluid item widths and fixed gutters.</p>
+				<p>The column widths have percentage values, and the gutters have px values.</p>
 			</div>
-			<p>Adapt grid system uses fluid item widths and fixed gutters.</p>
-			<p>The column widths have percentage values, and the gutters have px values.</p>
 		</div>
 	</section>
 	<section class="shaded">
-		<div class="container">
-			<h2 id="semantic">Semantic Grid</h2>
+		<div class="container" id="semantic">
+			<h2>Semantic Grid</h2>
 			<p>Set span and gutter widths, choose the number of spans, and switch between pixels and percentages. All without any <code>span-x</code> classes in your markup.</p>
 			<div class="example">
 				<h3>Your Markup</h3>
@@ -322,8 +327,8 @@ article {
 		</div>
 	</section>
 	<section>
-		<div class="container">
-			<h2 id="howuseit">How Use It?</h2>
+		<div class="container" id="howuseit">
+			<h2>How Use It?</h2>
 			<p>First, you should <a href="https://github.com/amazingSurge/adaptGrid/archive/master.zip">download</a> the latest version.</p>
 			<p>Then, you have to do is include the grid file: use CSS or LESS.</p>
 			<div class="example">
