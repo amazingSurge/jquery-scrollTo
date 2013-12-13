@@ -11,6 +11,7 @@
 	position: fixed;
 	top: 110px;
 	left: 161px;
+	z-index: 99;
 	width: 300px;
 	margin: 0;
 	padding: 0;
@@ -18,33 +19,15 @@
 .nav > li {
 	position: relative;
 	display: block;
-	line-height: 2;
-	list-style: none;
-}
-.nav > li > a {
-	display: block;
 	padding: 5px 20px;
 	color: #716B7A;
-	text-decoration: none;
 	background-color: #F7F5FA;
-	outline: none;
+	list-style: none;
 }
-.nav > li > a:hover {
+.nav > li:hover {
 	background-color: #E5E3E9;
 }
-.nav > li > .scrollTo_active {
+.nav > li.scrollTo_active {
 	color: #563D7C;
 	font-weight: bold;
-}
-.nav .nav {
-	position: relative;
-	top: 0;
-	left: 0;
-	display: none;
-}
-.nav > li > .scrollTo_active + .nav {
-	display: block;
-}
-.nav .nav > li > a{
-	padding-left: 30px;
 }

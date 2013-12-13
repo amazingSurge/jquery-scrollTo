@@ -19,6 +19,8 @@
 		this.easing = 'easing_' + this.options.easing;
 		this.activeClass = this.namespace + '_active';
 
+		var x = $(window).width();
+
 		this.noroll = false;
 
 		var self = this;
@@ -33,8 +35,8 @@
 					var target = event.target || event.srcElement;
 					self.$target = $(target);
 					self.active(self.$target);
-					var href = self.$target.attr('href');
-					self.$anchor = $(href);
+					var href = self.$target.attr('data-scrollto');
+					self.$anchor = $('#' + href);
 					self.$doc.trigger('ScrollTo::jump');
 					return false;
 				});
@@ -42,6 +44,7 @@
 				//bind events
 				self.$doc.on('ScrollTo::jump', function() {
 					self.noroll = true;
+					self.disableHover();
 
 					if (self.$anchor && self.$anchor.length > 0) {
 						var top = self.$anchor.offset().top;
@@ -51,8 +54,11 @@
 								'margin-top': -(pos - top) + 'px'
 							});
 							$(window).scrollTop(top);
-							self.$doc.addClass(self.easing).css({
+							self.$doc.addClass(self.easing + ' duration_' + self.options.speed).css({
 								'margin-top': ''
+							}).one(self.transition.end, function() {
+								self.noroll = false;
+								self.$doc.removeClass(self.easing + ' duration_' + self.options.speed);
 							});
 						} else {
 							$('body, html').stop(true, false).animate({
@@ -64,24 +70,22 @@
 						return;
 					}
 				});
-				self.$doc.on(self.transition.end, function() {
-					self.noroll = false;
-					self.$doc.removeClass(self.easing);
-				});
-
 			},
 			build: function() {
-				self.insertRule('.' + self.easing + '{' + self.transition.prefix + 'transition-duration: ' + self.options.speed + 'ms;}');
+				if (x < 768) {
+					var mobile = self.options.mobile;
+					self.options.easing = mobile.easing;
+					self.options.speed = mobile.speed;
+					self.options.offsetTop = mobile.speed;
+				}
+				self.insertRule('.duration_' + self.options.speed + '{' + self.transition.prefix + 'transition-duration: ' + self.options.speed + 'ms;}');
 			},
 			active: function($index) {
-				if ($index.parent().parent().has('.' + self.activeClass).length) {
-					$index.parent().parent().find('.' + self.activeClass).removeClass(self.activeClass);
-					$index.addClass(self.activeClass);
-				} else {
-					$index.addClass(self.activeClass);
+				if (typeof $index === 'undefined') {
+					return;
 				}
-				var href = $index.attr('href');
-				self.$anchor = $(href);
+				self.$element.children().removeClass(self.activeClass);
+				$index.addClass(self.activeClass);
 			},
 			roll: function() {
 				if (self.noroll) {
@@ -89,11 +93,22 @@
 				}
 				self.$doc.find("[id]").each(function() {
 					if (($(window).scrollTop() > $(this).offset().top - self.options.offsetTop) && ($(window).scrollTop() < $(this).offset().top + $(this).height())) {
-						var anchor_href = $(this).attr('id');
-						var $anchor = self.$element.find('[href="#' + anchor_href + '"]');
+						var anchor_href = $(this).attr('id'),
+							$anchor = self.$element.find('[data-scrollto="' + anchor_href + '"]');
+						self.$anchor = $(this);
 						self.active($anchor);
 					}
 				});
+			},
+			disableHover: function() {
+				var timer;
+				clearTimeout(timer);
+				if (!self.$doc.hasClass('disable-hover')) {
+					self.$doc.addClass('disable-hover');
+				}
+				timer = setTimeout(function() {
+					self.$doc.removeClass('disable-hover');
+				}, self.options.speed);
 			},
 			transition: function() {
 				var e,
@@ -151,7 +166,12 @@
 		speed: '1000',
 		easing: 'linear',
 		namespace: 'scrollTo',
-		offsetTop: 50
+		offsetTop: 50,
+		mobile: {
+			speed: '500',
+			easing: 'linear',
+			offsetTop: 0
+		}
 	};
 	ScrollTo.prototype = {
 		constructor: ScrollTo,
