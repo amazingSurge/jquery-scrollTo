@@ -1,4 +1,4 @@
-.disable-hover,
-.disable-hover * {
+.scrollTo_animating,
+.scrollTo_animating * {
 	pointer-events: none !important;
 }
