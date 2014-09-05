@@ -1,4 +1,4 @@
-/*! jQuery scrollTo - v0.1.0 - 2014-09-05
+/*! jQuery scrollTo - v0.1.1 - 2014-09-05
 * https://github.com/amazingSurge/jquery-scrollTo
 * Copyright (c) 2014 amazingSurge; Licensed GPL */
 (function(window, document, $, undefined) {

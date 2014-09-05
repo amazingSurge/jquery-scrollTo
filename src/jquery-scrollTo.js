@@ -2,7 +2,7 @@
  * scrollTo
  * https://github.com/amazingsurge/jquery-scrollTo
  *
- * Copyright (c) 2013 amazingsurge
+ * Copyright (c) 2014 amazingsurge
  * Licensed under the GPL license.
  */
 
