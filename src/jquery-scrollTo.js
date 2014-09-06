@@ -206,7 +206,7 @@
     $.fn.scrollTo = function(options) {
         if (typeof options === 'string') {
             var method = options;
-            var method_arguments = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : [];
+            var method_arguments = Array.prototype.slice.call(arguments, 1);
 
             return this.each(function() {
                 var api = $.data(this, 'scrollTo');
