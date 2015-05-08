@@ -75,12 +75,12 @@
 
                             self.insertRule('.duration_' + speed + '{' + self.transition.prefix + 'transition-duration: ' + speed + 'ms;}');
 
-                            self.$doc.addClass('easing_' + easing + ' duration_' + speed).css({
-                                'margin-top': ''
-                            }).one(self.transition.end, function() {
-                                self.noroll = false;
-                                self.$doc.removeClass(self.classes.animating + ' easing_' + easing + ' duration_' + speed);
-                            });
+                            // self.$doc.addClass('easing_' + easing + ' duration_' + speed).css({
+                            //     'margin-top': ''
+                            // }).one(self.transition.end, function() {
+                            //     self.noroll = false;
+                            //     self.$doc.removeClass(self.classes.animating + ' easing_' + easing + ' duration_' + speed);
+                            // });
                         } else {
                             $('html, body').stop(true, false).animate({
                                 scrollTop: self.top
