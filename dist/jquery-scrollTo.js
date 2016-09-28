@@ -1,223 +1,407 @@
-/*! jQuery scrollTo - v0.1.1 - 2014-09-05
+/**
+* jQuery scrollTo v0.2.0
 * https://github.com/amazingSurge/jquery-scrollTo
-* Copyright (c) 2014 amazingSurge; Licensed GPL */
-(function(window, document, $, undefined) {
+*
+* Copyright (c) amazingSurge
+* Released under the LGPL-3.0 license
+*/
+(function(global, factory) {
+  if (typeof define === "function" && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof exports !== "undefined") {
+    factory(require('jquery'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(global.jQuery);
+    global.jqueryScrollToEs = mod.exports;
+  }
+})(this,
+
+  function(_jquery) {
     'use strict';
 
-    // Constructor
-    var ScrollTo = function(element, options) {
+    var _jquery2 = _interopRequireDefault(_jquery);
+
+    function _interopRequireDefault(obj) {
+      return obj && obj.__esModule ? obj : {
+        default: obj
+      };
+    }
+
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ?
+
+      function(obj) {
+        return typeof obj;
+      }
+      :
+
+      function(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+      };
+
+    function _classCallCheck(instance, Constructor) {
+      if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+      }
+    }
+
+    var _createClass = function() {
+      function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+          var descriptor = props[i];
+          descriptor.enumerable = descriptor.enumerable || false;
+          descriptor.configurable = true;
+
+          if ("value" in descriptor)
+            descriptor.writable = true;
+          Object.defineProperty(target, descriptor.key, descriptor);
+        }
+      }
+
+      return function(Constructor, protoProps, staticProps) {
+        if (protoProps)
+          defineProperties(Constructor.prototype, protoProps);
+
+        if (staticProps)
+          defineProperties(Constructor, staticProps);
+
+        return Constructor;
+      };
+    }();
+
+    var DEFAULTS = {
+      speed: '1000',
+      easing: 'linear',
+      namespace: 'scrollTo',
+      offsetTop: 50,
+      mobile: {
+        width: 768,
+        speed: '500',
+        easing: 'linear'
+      }
+    };
+
+    var NAMESPACE$1 = 'ScrollTo';
+
+    /**
+     * Plugin constructor
+     **/
+
+    var ScrollTo = function() {
+      function ScrollTo(element, options) {
+        _classCallCheck(this, ScrollTo);
+
         this.element = element;
-        this.$element = $(element);
-        this.$doc = $('body');
-        this.options = $.extend(true, {}, ScrollTo.defaults, options);
+        this.$element = (0, _jquery2.default)(element);
+        this.$doc = (0, _jquery2.default)('body');
+        this.options = _jquery2.default.extend(true, {}, DEFAULTS, options);
 
         this.namespace = this.options.namespace;
 
         this.classes = {
-            active: this.namespace + '_active',
-            animating: this.namespace + '_animating',
+          active: this.namespace + '_active',
+          animating: this.namespace + '_animating'
         };
 
         this.useMobile = false;
         this.noroll = false;
 
-        var self = this;
-        $.extend(self, {
-            init: function() {
-                self.transition = self.transition();
-                self.roll();
-
-                self.$element.on('click.scrollTo', function(event) {
-                    event = event || window.event;
-                    var target = event.target || event.srcElement;
-                    self.$target = $(target);
-                    self.active(self.$target);
-
-                    var href = self.$target.attr('data-scrollto');
-                    self.$anchor = $('#' + href);
-                    self.$doc.trigger('ScrollTo::jump');
-
-                    return false;
-                });
-
-                //bind events
-                self.$doc.on('ScrollTo::jump', function() {
-                    self.noroll = true;
-
-                    self.checkMobile();
-
-                    var speed, easing;
-
-                    if (self.useMobile) {
-                        speed = self.options.mobile.speed;
-                        easing = self.options.mobile.easing;
-                    } else {
-                        speed = self.options.speed;
-                        easing = self.options.easing;
-                    }
-                    if (self.$anchor && self.$anchor.length > 0) {
-                        self.$doc.addClass(self.classes.animating);
-
-                        var top = self.$anchor.offset().top;
-                        if (self.transition.supported) {
-                            var pos = $(window).scrollTop();
-
-                            self.$doc.css({
-                                'margin-top': -(pos - top) + 'px'
-                            });
-
-                            $(window).scrollTop(top);
-
-                            self.insertRule('.duration_' + speed + '{' + self.transition.prefix + 'transition-duration: ' + speed + 'ms;}');
-
-                            self.$doc.addClass('easing_' + easing + ' duration_' + speed).css({
-                                'margin-top': ''
-                            }).one(self.transition.end, function() {
-                                self.noroll = false;
-                                self.$doc.removeClass(self.classes.animating + ' easing_' + easing + ' duration_' + speed);
-                            });
-                        } else {
-                            $('html, body').stop(true, false).animate({
-                                scrollTop: self.top
-                            }, speed, function() {
-                                self.$doc.removeClass(self.classes.animating);
-                            });
-
-                            return;
-                        }
-                    } else {
-                        return;
-                    }
-                });
-
-                $(window).scroll(function() {
-                    self.roll();
-                });
-            },
-            checkMobile: function() {
-                var width = $(window).width();
-
-                if (width < self.options.mobile.width) {
-                    self.useMobile = true;
-                } else {
-                    self.useMobile = false;
-                }
-            },
-            active: function($index) {
-                if (typeof $index === 'undefined') {
-                    return;
-                }
-                self.$element.children().removeClass(self.classes.active);
-                $index.addClass(self.classes.active);
-            },
-            roll: function() {
-                if (self.noroll) {
-                    return;
-                }
-                self.$doc.find("[id]").each(function() {
-                    if (($(window).scrollTop() > $(this).offset().top - self.options.offsetTop) && ($(window).scrollTop() < $(this).offset().top + $(this).height())) {
-                        var anchor_href = $(this).attr('id'),
-                            $anchor = self.$element.find('[data-scrollto="' + anchor_href + '"]');
-                        self.$anchor = $(this);
-                        self.active($anchor);
-                    }
-                });
-            },
-            transition: function() {
-                var e,
-                    end,
-                    prefix = '',
-                    supported = false,
-                    el = document.createElement("fakeelement"),
-                    transitions = {
-                        "WebkitTransition": "webkitTransitionEnd",
-                        "MozTransition": "transitionend",
-                        "OTransition": "oTransitionend",
-                        "transition": "transitionend"
-                    };
-                for (e in transitions) {
-                    if (el.style[e] !== undefined) {
-                        end = transitions[e];
-                        supported = true;
-                        break;
-                    }
-                }
-                if (/(WebKit)/i.test(window.navigator.userAgent)) {
-                    prefix = '-webkit-';
-                }
-                return {
-                    prefix: prefix,
-                    end: end,
-                    supported: supported
-                };
-            },
-            insertRule: function(rule) {
-                if (self.rules && self.rules[rule]) {
-                    return;
-                } else if (self.rules === undefined) {
-                    self.rules = {};
-                } else {
-                    self.rules[rule] = true;
-                }
-
-                if (document.styleSheets && document.styleSheets.length) {
-                    document.styleSheets[0].insertRule(rule, 0);
-                } else {
-                    var style = document.createElement('style');
-                    style.innerHTML = rule;
-                    document.head.appendChild(style);
-                }
-            }
-        });
-
         this.init();
-    };
+      }
 
-    ScrollTo.defaults = {
-        speed: '1000',
-        easing: 'linear',
-        namespace: 'scrollTo',
-        offsetTop: 50,
-        mobile: {
-            width: 768,
-            speed: '500',
-            easing: 'linear',
-        }
-    };
+      _createClass(ScrollTo, [{
+        key: 'init',
+        value: function init() {
+          var _this = this;
 
-    ScrollTo.prototype = {
-        constructor: ScrollTo,
+          var that = this;
 
-        jump: function() {
-            this.$doc.trigger('ScrollTo::jump');
-        },
-        destroy: function() {
-            this.$trigger.remove();
-            this.$element.data('ScrollTo', null);
-            this.$element.off('ScrollTo::jump');
-        }
-    };
+          this.transition = this.transition();
+          this.roll();
 
-    $.fn.scrollTo = function(options) {
-        if (typeof options === 'string') {
-            var method = options;
-            var method_arguments = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : [];
+          this.$element.on('click.scrollTo',
 
-            return this.each(function() {
-                var api = $.data(this, 'scrollTo');
+            function(event) {
+              event = event || window.event;
+              var target = event.target || event.srcElement;
+              that.$target = (0, _jquery2.default)(target);
+              that.active(that.$target);
 
-                if (api && typeof api[method] === 'function') {
-                    api[method].apply(api, method_arguments);
+              var href = that.$target.attr('data-scrollto');
+
+              if (href) {
+                that.$anchor = (0, _jquery2.default)('#' + href);
+                that.$doc.trigger(NAMESPACE$1 + '::jump');
+              }
+
+              return false;
+            }
+          );
+
+          //bind events
+          this.$doc.on(NAMESPACE$1 + '::jump',
+
+            function() {
+              that.noroll = true;
+
+              that.checkMobile();
+
+              var easing = void 0;
+              var speed = void 0;
+
+              if (that.useMobile) {
+                speed = that.options.mobile.speed;
+                easing = that.options.mobile.easing;
+              } else {
+                speed = that.options.speed;
+                easing = that.options.easing;
+              }
+
+              if (that.$anchor && that.$anchor.length > 0) {
+                that.$doc.addClass(that.classes.animating);
+
+                var top = that.$anchor.offset().top;
+
+                if (that.transition.supported) {
+                  var pos = (0, _jquery2.default)(window).scrollTop();
+
+                  that.$doc.css({
+                    'margin-top': -(pos - top) + 'px'
+                  });
+
+                  (0, _jquery2.default)(window).scrollTop(top);
+
+                  that.insertRule('.duration_' + speed + '{' + that.transition.prefix + 'transition-duration: ' + speed + 'ms;}');
+
+                  that.$doc.addClass('easing_' + easing + ' duration_' + speed).css({
+                    'margin-top': ''
+                  }).one(that.transition.end,
+
+                    function() {
+                      that.noroll = false;
+                      that.$doc.removeClass(that.classes.animating + ' easing_' + easing + ' duration_' + speed);
+                    }
+                  );
+                } else {
+                  (0, _jquery2.default)('html, body').animate({
+                    scrollTop: that.top
+                  }, speed,
+
+                    function() {
+                      that.$doc.removeClass(that.classes.animating);
+                    }
+                  );
+
+                  return;
                 }
-            });
-        } else {
-            return this.each(function() {
-                var api = $.data(this, 'scrollTo');
-                if (!api) {
-                    api = new ScrollTo(this, options);
-                    $.data(this, 'scrollTo', api);
-                }
-            });
+              } else {
+
+                return;
+              }
+            }
+          );
+
+          (0, _jquery2.default)(window).scroll(
+
+            function() {
+              _this.roll();
+            }
+          );
         }
+      }, {
+        key: 'checkMobile',
+        value: function checkMobile() {
+          var width = (0, _jquery2.default)(window).width();
+
+          if (width < this.options.mobile.width) {
+            this.useMobile = true;
+          } else {
+            this.useMobile = false;
+          }
+        }
+      }, {
+        key: 'active',
+        value: function active($index) {
+          if (typeof $index === 'undefined') {
+
+            return;
+          }
+          this.$element.children().removeClass(this.classes.active);
+          $index.addClass(this.classes.active);
+        }
+      }, {
+        key: 'roll',
+        value: function roll() {
+          var that = this;
+
+          if (this.noroll) {
+
+            return;
+          }
+          this.$doc.find("[id]").each(
+
+            function() {
+              if ((0, _jquery2.default)(window).scrollTop() > (0, _jquery2.default)(this).offset().top - that.options.offsetTop && (0, _jquery2.default)(window).scrollTop() < (0, _jquery2.default)(this).offset().top + (0, _jquery2.default)(this).height()) {
+                var anchorHref = (0, _jquery2.default)(this).attr('id');
+                var $anchor = that.$element.find('[data-scrollto="' + anchorHref + '"]');
+                that.$anchor = (0, _jquery2.default)(this);
+                that.active($anchor);
+              }
+            }
+          );
+        }
+      }, {
+        key: 'transition',
+        value: function transition() {
+          var e = void 0;
+          var end = void 0;
+          var prefix = '';
+          var supported = false;
+          var el = document.createElement("fakeelement");
+
+          var transitions = {
+            "WebkitTransition": "webkitTransitionEnd",
+            "MozTransition": "transitionend",
+            "OTransition": "oTransitionend",
+            "transition": "transitionend"
+          };
+
+          for (e in transitions) {
+
+            if (el.style[e] !== undefined) {
+              end = transitions[e];
+              supported = true;
+              break;
+            }
+          }
+
+          if (/(WebKit)/i.test(window.navigator.userAgent)) {
+            prefix = '-webkit-';
+          }
+
+          return {
+            prefix: prefix,
+            end: end,
+            supported: supported
+          };
+        }
+      }, {
+        key: 'insertRule',
+        value: function insertRule(rule) {
+          if (this.rules && this.rules[rule]) {
+
+            return;
+          } else if (this.rules === undefined) {
+            this.rules = {};
+          } else {
+            this.rules[rule] = true;
+          }
+
+          if (document.styleSheets && document.styleSheets.length) {
+            document.styleSheets[0].insertRule(rule, 0);
+          } else {
+            var style = document.createElement('style');
+            style.innerHTML = rule;
+            document.head.appendChild(style);
+          }
+        }
+      }, {
+        key: 'jump',
+        value: function jump() {
+          this.$doc.trigger('ScrollTo::jump');
+        }
+      }, {
+        key: 'destroy',
+        value: function destroy() {
+          this.$trigger.remove();
+          this.$element.data('ScrollTo', null);
+          this.$element.off('ScrollTo::jump');
+        }
+      }], [{
+        key: 'setDefaults',
+        value: function setDefaults(options) {
+          _jquery2.default.extend(DEFAULTS, _jquery2.default.isPlainObject(options) && options);
+        }
+      }]);
+
+      return ScrollTo;
+    }();
+
+    var info = {
+      version: '0.2.0'
     };
-}(window, document, jQuery));
+
+    var NAMESPACE = 'scrollTo';
+    var OtherScrollTo = _jquery2.default.fn.scrollTo;
+
+    var jQueryScrollTo = function jQueryScrollTo(options) {
+      var _this2 = this;
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      if (typeof options === 'string') {
+        var _ret = function() {
+          var method = options;
+
+          if (/^_/.test(method)) {
+
+            return {
+              v: false
+            };
+          } else if (/^(get)/.test(method)) {
+            var instance = _this2.first().data(NAMESPACE);
+
+            if (instance && typeof instance[method] === 'function') {
+
+              return {
+                v: instance[method].apply(instance, args)
+              };
+            }
+          } else {
+
+            return {
+              v: _this2.each(
+
+                function() {
+                  var instance = _jquery2.default.data(this, NAMESPACE);
+
+                  if (instance && typeof instance[method] === 'function') {
+                    instance[method].apply(instance, args);
+                  }
+                }
+              )
+            };
+          }
+        }();
+
+        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object")
+
+          return _ret.v;
+      }
+
+      return this.each(
+
+        function() {
+          if (!(0, _jquery2.default)(this).data(NAMESPACE)) {
+            (0, _jquery2.default)(this).data(NAMESPACE, new ScrollTo(this, options));
+          }
+        }
+      );
+    };
+
+    _jquery2.default.fn.scrollTo = jQueryScrollTo;
+
+    _jquery2.default.scrollTo = _jquery2.default.extend({
+      setDefaults: ScrollTo.setDefaults,
+      noConflict: function noConflict() {
+        _jquery2.default.fn.scrollTo = OtherScrollTo;
+
+        return jQueryScrollTo;
+      }
+    }, info);
+  }
+);
