@@ -1,5 +1,5 @@
 /**
-* jQuery scrollTo v0.2.0
+* jQuery scrollTo v0.2.1
 * https://github.com/amazingSurge/jquery-scrollTo
 *
 * Copyright (c) amazingSurge
@@ -25,7 +25,7 @@ const NAMESPACE$1 = 'ScrollTo';
  * Plugin constructor
  **/
 class ScrollTo {
-  constructor(element, options) {
+  constructor(element, options = {}) {
     this.element = element;
     this.$element = $(element);
     this.$doc = $('body');
@@ -217,12 +217,12 @@ class ScrollTo {
   }
 
   static setDefaults(options) {
-    $.extend(DEFAULTS, $.isPlainObject(options) && options);
+    $.extend(true, DEFAULTS, $.isPlainObject(options) && options);
   }
 }
 
 var info = {
-  version:'0.2.0'
+  version:'0.2.1'
 };
 
 const NAMESPACE = 'scrollTo';

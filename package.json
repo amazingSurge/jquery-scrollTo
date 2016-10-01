@@ -2,7 +2,7 @@
   "name": "jquery-scrollTo",
   "title": "jQuery scrollTo",
   "description": "A jquery plugin that click on the button to jump to the specified location.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/amazingSurge/jquery-scrollTo",
   "author": {
     "name": "amazingSurge",

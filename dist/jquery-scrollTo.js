@@ -1,5 +1,5 @@
 /**
-* jQuery scrollTo v0.2.0
+* jQuery scrollTo v0.2.1
 * https://github.com/amazingSurge/jquery-scrollTo
 *
 * Copyright (c) amazingSurge
@@ -90,7 +90,9 @@
      **/
 
     var ScrollTo = function() {
-      function ScrollTo(element, options) {
+      function ScrollTo(element) {
+        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
         _classCallCheck(this, ScrollTo);
 
         this.element = element;
@@ -322,7 +324,7 @@
       }], [{
         key: 'setDefaults',
         value: function setDefaults(options) {
-          _jquery2.default.extend(DEFAULTS, _jquery2.default.isPlainObject(options) && options);
+          _jquery2.default.extend(true, DEFAULTS, _jquery2.default.isPlainObject(options) && options);
         }
       }]);
 
@@ -330,7 +332,7 @@
     }();
 
     var info = {
-      version: '0.2.0'
+      version: '0.2.1'
     };
 
     var NAMESPACE = 'scrollTo';

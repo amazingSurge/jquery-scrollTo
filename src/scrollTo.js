@@ -7,7 +7,7 @@ const NAMESPACE = 'ScrollTo';
  * Plugin constructor
  **/
 class ScrollTo {
-  constructor(element, options) {
+  constructor(element, options = {}) {
     this.element = element;
     this.$element = $(element);
     this.$doc = $('body');
@@ -199,7 +199,7 @@ class ScrollTo {
   }
 
   static setDefaults(options) {
-    $.extend(DEFAULTS, $.isPlainObject(options) && options);
+    $.extend(true, DEFAULTS, $.isPlainObject(options) && options);
   }
 }
 
