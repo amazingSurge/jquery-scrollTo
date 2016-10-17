@@ -46,6 +46,11 @@ bower install jquery-scrollTo --save
 npm install jquery-scrollTo --save
 ```
 
+#### Install From Yarn
+```sh
+yarn add jquery-scrollTo
+```
+
 #### Build From Source
 If you want build from source:
 
