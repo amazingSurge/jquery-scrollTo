@@ -1,5 +1,5 @@
 /**
-* jQuery scrollTo v0.2.1
+* jQuery scrollTo v0.2.2
 * https://github.com/amazingSurge/jquery-scrollTo
 *
 * Copyright (c) amazingSurge
@@ -24,7 +24,7 @@ const NAMESPACE$1 = 'ScrollTo';
 /**
  * Plugin constructor
  **/
-class ScrollTo {
+class ScrollTo$1 {
   constructor(element, options = {}) {
     this.element = element;
     this.$element = $(element);
@@ -222,7 +222,7 @@ class ScrollTo {
 }
 
 var info = {
-  version:'0.2.1'
+  version:'0.2.2'
 };
 
 const NAMESPACE = 'scrollTo';
@@ -251,7 +251,7 @@ const jQueryScrollTo = function(options, ...args) {
 
   return this.each(function() {
     if (!$(this).data(NAMESPACE)) {
-      $(this).data(NAMESPACE, new ScrollTo(this, options));
+      $(this).data(NAMESPACE, new ScrollTo$1(this, options));
     }
   });
 };
@@ -259,7 +259,7 @@ const jQueryScrollTo = function(options, ...args) {
 $.fn.scrollTo = jQueryScrollTo;
 
 $.scrollTo = $.extend({
-  setDefaults: ScrollTo.setDefaults,
+  setDefaults: ScrollTo$1.setDefaults,
   noConflict: function() {
     $.fn.scrollTo = OtherScrollTo;
     return jQueryScrollTo;
